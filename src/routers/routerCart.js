@@ -8,7 +8,6 @@ producto
 e. DELETE: '/:id' - Vacía un carrito. */
 const express = require('express');
 const { Cart } = require('../components/cart');
-const { Product } = require('../components/product');
 const router = express.Router();
 
 const carts = [];

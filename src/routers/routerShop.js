@@ -5,7 +5,6 @@ c. POST: '/' - Para incorporar productos al listado (disponible solo para admini
 d. PUT: '/:id' - Actualiza un producto por su id (disponible solo para administradores)
 e. DELETE: '/:id' - Borra un producto por su id (disponible solo para administradores) */
 const { Router } = require('express');
-const { Product } = require('../components/product');
 const { ProductList } = require('../components/productsList');
 const router = new Router();
 const adminUser = true;
