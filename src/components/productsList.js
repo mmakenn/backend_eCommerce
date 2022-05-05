@@ -12,7 +12,7 @@ class ProductList{
         if (this.products.length > 0 ){
             newId = this.products[this.products.length - 1].id + 1;
         }
-        product.setId(newId);
+        product.id = newId;
         this.products.push(product);
         return newId;
     }
@@ -25,23 +25,23 @@ class ProductList{
         }
 
         if (price){
-            found.changePrice(price);
+            found.price = price;
         }
         if (stock){
-            found.changeStock(stock);
+            found.stock = stock;
         }
         return true;    
     }
 
     getById(id) {
         const idNumber = parseInt(id);
-        const found = this.products.find(product => product.getId() === idNumber);
+        const found = this.products.find(product => product.id === idNumber);
         return found ? found : null;
     }
 
     deleteById(id) {
         const idNumber = parseInt(id);
-        const foundIndex = this.products.findIndex(product => product.getId() === idNumber);
+        const foundIndex = this.products.findIndex(product => product.id === idNumber);
         if (foundIndex === -1) {
             return false;
         }
