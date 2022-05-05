@@ -1,9 +1,3 @@
-/* El router base '/api/productos' implementará cinco funcionalidades:
-a. GET: '/' - Me permite listar todos los productos disponibles (disponible para todes)
-b. GET: '/:id' - Me permite listar un producto por su id (disponible para todes)
-c. POST: '/' - Para incorporar productos al listado (disponible solo para administradores)
-d. PUT: '/:id' - Actualiza un producto por su id (disponible solo para administradores)
-e. DELETE: '/:id' - Borra un producto por su id (disponible solo para administradores) */
 const { Router } = require('express');
 const { ProductList } = require('../components/productsList');
 const router = new Router();

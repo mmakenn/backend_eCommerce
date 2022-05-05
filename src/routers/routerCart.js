@@ -1,14 +1,6 @@
-/* El router base '/api/carritos' implementará cinco rutas, disponibles para usuarios y
-administradores:
-a. POST: '/' - Crea un carrito y devuelve su id.
-b. POST: '/:id/productos' - Para incorporar productos al carrito por su id de producto
-c. GET: '/:id/productos' - Me permite listar todos los productos guardados en el carrito
-d. DELETE: '/:id/productos/:id_prod' - Eliminar un producto del carrito por su id de carrito y de
-producto
-e. DELETE: '/:id' - Vacía un carrito. */
-const express = require('express');
+const { Router } = require('express');
 const { Cart } = require('../components/cart');
-const router = express.Router();
+const router = new Router();
 
 const carts = [];
 let totalCarts = 1;
