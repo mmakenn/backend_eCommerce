@@ -1,52 +1,83 @@
 class ProductList{
-    constructor() {
-        this.products = [];
+    constructor(fileName) {
+        this.fileName = fileName;
     }
 
-    getAll() {
-        return this.products; 
+    async getAll() {
+        try {
+            const texto = await fs.promises.readFile(this.fileName, {encoding: 'utf-8', flag: 'a+'});
+            if (texto === "") {
+                return [];
+            }
+            return JSON.parse(texto); 
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-    save(product) {
-        let newId = 1;
-        if (this.products.length > 0 ){
-            newId = this.products[this.products.length - 1].id + 1;
+    async save(product) {
+        try {
+            const products = await this.getAll();
+            const newId = products.length + 1;
+            product.id = newId;
+            products.push(product);
+            const newTexto = JSON.stringify(products)
+            await fs.promises.writeFile(this.fileName, newTexto);
+            return newId;
+        } catch (error) {
+            console.log(error);
         }
-        product.id = newId;
-        this.products.push(product);
-        return newId;
     }
 
-    update(id, price, stock){
-        const idNumber = parseInt(id);
-        const found = this.getById(idNumber);
-        if (! found){
-            return false;
-        }
+    async update(idIn, price, stock){
+        const id = parseInt(idIn);
+        try{    
+            const found = await this.getById(id);
+            if (! found){
+                return false;
+            }
 
-        if (price){
-            found.price = price;
+            if (price){
+                found.price = price;
+            }
+            if (stock){
+                found.stock = stock;
+            }
+
+            this.deleteById(id);
+            this.save(found);
+            return true;    
+        } catch (error) {
+            console.log(error);
         }
-        if (stock){
-            found.stock = stock;
-        }
-        return true;    
     }
 
-    getById(id) {
-        const idNumber = parseInt(id);
-        const found = this.products.find(product => product.id === idNumber);
-        return found ? found : null;
+    async getById(idIn) {
+        const id = parseInt(idIn);
+        try {
+            const products = await this.getAll();
+            const found = products.find(product => product.id === id);
+            return found ? found : null;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-    deleteById(id) {
-        const idNumber = parseInt(id);
-        const foundIndex = this.products.findIndex(product => product.id === idNumber);
-        if (foundIndex === -1) {
-            return false;
+    async deleteById(idIn) {
+        const id = parseInt(idIn);
+        try {
+            const products = await this.getAll();
+            const foundIndex = products.findIndex(product => product.id === id);
+            if (foundIndex === -1) {
+                return false;
+            }
+            products.splice(foundIndex, 1);
+            const newTexto = JSON.stringify(products)
+            await fs.promises.writeFile(this.fileName, newTexto);
+            return true
+        } catch (error) {
+            console.log(error);
         }
-        this.products.splice(foundIndex, 1);
-        return true
     }
 }
 
