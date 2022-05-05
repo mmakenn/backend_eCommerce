@@ -11,15 +11,43 @@ const { Cart } = require('../components/cart');
 const router = express.Router();
 
 const carts = [];
+let totalCarts = 1;
 
-router.post('/', (req, res) => {
-    let newId = 1;
-    if (carts.length > 0 ){
-        newId = carts[carts.length - 1].id + 1;
+function createFileName(id){
+    return `./src/data/cartId${id}.txt`;
+}
+
+async function pushUserProducts(id, res){
+    const found = carts.find(cart => cart.getId() === id);
+    if (found){
+        const products = await found.getAll();
+        res.status(200).json( {products: products} );
+    } else {
+        res.status(400).json( {error: "Cart id not found"} );
     }
-    const cart = new Cart(newId);
+}
+
+async function deleteUserProduct(cartId, productId, res){
+    const found = carts.find(cart => cart.getId() === cartId);
+    if (found){
+        const deleteStatus = await found.deleteById(productId);
+        if (deleteStatus){
+            res.status(200).json( {ok: `Product id: ${productId} deleted from cart id: ${cartId}` } );
+        } else {
+            res.status(400).json( {error: "Product id not found"} );    
+        }
+    } else {
+        res.status(400).json( {error: "Cart id not found"} );
+    }
+}
+
+/* -------------------------------------------------- */
+router.post('/', (req, res) => {
+    const fileName = createFileName(totalCarts);
+    const cart = new Cart(totalCarts, fileName);
     carts.push(cart);
-    res.status(201).json( {cartId: newId} );
+    totalCarts++;
+    res.status(201).json( {cartId: totalCarts} );
 });
 
 router.post('/:id/productos', (req, res) =>{
@@ -27,8 +55,7 @@ router.post('/:id/productos', (req, res) =>{
     const id = parseInt(params.id);
     const found = carts.find(cart => cart.getId() === id);
     if (found){
-        const product = new Product(body.name, body.description, body.img, body.price, body.stock);
-        found.save(product);
+        found.save(body);
         res.sendStatus(200);
     } else {
         res.status(400).json( {error: "Cart id not found"} );
@@ -38,29 +65,14 @@ router.post('/:id/productos', (req, res) =>{
 router.get('/:id/productos', (req, res) => {
     const { params } = req;
     const id = parseInt(params.id);
-    const found = carts.find(cart => cart.getId() === id);
-    if (found){
-        res.status(200).json( {products: found.getAll()} );
-    } else {
-        res.status(400).json( {error: "Cart id not found"} );
-    }
+    pushUserProducts(id, res);
 });
 
 router.delete('/:id/productos/:id_prod',  (req, res) => {
     const { params } = req;
     const cartId = parseInt(params.id);
-    const found = carts.find(cart => cart.getId() === cartId);
-    if (found){
-        const productId = parseInt(params.id_prod);
-        const deleteStatus = found.deleteById(productId);
-        if (deleteStatus){
-            res.status(200).json( {ok: `Product id: ${productId} deleted from cart id: ${cartId}` } );
-        } else {
-            res.status(400).json( {error: "Product id not found"} );    
-        }
-    } else {
-        res.status(400).json( {error: "Cart id not found"} );
-    }
+    const productId = parseInt(params.id_prod);
+    deleteUserProduct(cartId, productId, res);
 });
 
 router.delete('/:id',  (req, res) => {

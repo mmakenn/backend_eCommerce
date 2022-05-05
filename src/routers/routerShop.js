@@ -7,33 +7,14 @@ e. DELETE: '/:id' - Borra un producto por su id (disponible solo para administra
 const { Router } = require('express');
 const { ProductList } = require('../components/productsList');
 const router = new Router();
-const adminUser = true;
+const adminUser = false;
 
-const productsList = new ProductList();
+const fileName = './src/data/products.txt';
+const productsList = new ProductList(fileName);
 
 function checkContent(products){
     return (products.length > 0);
 }
-
-router.get('/', (req, res) => {
-    const products = productsList.getAll();
-    const areProducts = checkContent(products);
-    if (areProducts){
-        res.status(200).json( {products: products} );
-    } else {
-        res.status(204).json( {error: 'No content'} );
-    }
-});
-
-router.get('/:id', (req, res) => {
-    const { params } = req;
-    const found = productsList.getById(params.id);
-    if (found){
-        res.status(200).json( {product: found} );
-    } else {
-        res.status(204).json( {error: 'No content'} );
-    }
-});
 
 function checkUser(req, res, next) {
     if (adminUser) {
@@ -43,31 +24,71 @@ function checkUser(req, res, next) {
     }
 }
 
+async function pushProducts(res){
+    const products = await productsList.getAll();
+    const areProducts = checkContent(products);
+    if (areProducts){
+        res.status(200).json( {products: products} );
+    } else {
+        res.status(204).json( {error: 'No content'} );
+    }
+}
+
+async function pushProductsById(params, res){
+    const found = await productsList.getById(params.id);
+    if (found){
+        res.status(200).json( {product: found} );
+    } else {
+        res.status(204).json( {error: 'No content'} );
+    }
+}
+
+async function getUserInput(body, res) {
+    const id = await productsList.save(body);
+    res.status(201).json( {id: id} );
+}
+
+async function getUserUpdate(body, params, res){
+    const result = await productsList.update(params.id, body.price, body.stock);
+    if (result){
+        res.sendStatus(200);
+    } else {
+        res.status(304).json( {error: `Product id: ${params.id} not found`} );
+    }
+}
+
+async function deleteProduct(params, res){
+    const result = await productsList.deleteById(params.id);
+    if (result){
+        res.sendStatus(200);
+    } else {
+        res.status(304).json( {error: `Product id: ${params.id} not found`} );
+    }
+}
+
+/* -------------------------------------------------------- */
+router.get('/', (req, res) => {
+    pushProducts(res);
+});
+
+router.get('/:id', (req, res) => {
+    const { params } = req;
+    pushProductsById(params, res);
+});
+
 router.post('/', checkUser, (req, res) => {
     const { body } = req;
-    const product = new Product(body.name, body.description, body.img, body.price, body.stock);
-    const id = productsList.save(product);
-    res.status(201).json( {id: id} );
+    getUserInput(body, res);
 });
 
 router.put('/:id', checkUser, (req, res) => {
     const { body, params } = req;
-    const result = productsList.update(params.id, body.price, body.stock);
-    if (result){
-        res.sendStatus(200);
-    } else {
-        res.status(304).json( {error: `Product id: ${params.id} not found`} );
-    }
-})
+    getUserUpdate(body, params, res);
+});
 
 router.delete('/:id', checkUser, (req, res) => {
     const { params } = req;
-    const result = productsList.deleteById(params.id);
-    if (result){
-        res.sendStatus(200);
-    } else {
-        res.status(304).json( {error: `Product id: ${params.id} not found`} );
-    }
+    deleteProduct(params, res);
 });
 
 router.all('*', (req, res) => {
