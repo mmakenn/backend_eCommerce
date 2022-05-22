@@ -1,6 +1,6 @@
-const express = require('express');
-const routerShop = require('./routers/routerShop');
-const routerCart = require('./routers/routerCart');
+import express from 'express';
+import { router as routerCart } from './routers/routerCart.js';
+import { router as routerShop } from './routers/routerShop.js';
 
 const app = express();
 
@@ -14,10 +14,4 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/productos', routerShop);
 app.use('/api/carrito', routerCart);
 
-//--------------------------------------------
-// inicio el servidor
-const PORT = 8080;
-const connectedServer = app.listen(PORT, () => {
-    console.log(`Servidor http escuchando en el puerto ${connectedServer.address().port}`);
-});
-connectedServer.on('error', error => console.log(`Error en servidor ${error}`));
+export default app;

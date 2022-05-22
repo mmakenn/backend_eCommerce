@@ -1,5 +1,5 @@
-const fs = require('fs');
-const { Container } = require('./Container');
+import fs from 'fs';
+import { Container } from '../../containers/container.js';
 
 class Cart extends Container {
     constructor(id, fileName) {
@@ -21,4 +21,4 @@ class Cart extends Container {
 }
 
 
-module.exports = {Cart};
+export { Cart };

@@ -1,9 +1,10 @@
-const { Router } = require('express');
-const { ProductList } = require('../components/productsList');
+import { Router } from 'express';
+import { ProductList } from '../DAOs/local/productsList.js';
+
 const router = new Router();
 const adminUser = false;
 
-const fileName = './src/data/products.txt';
+const fileName = './src/data/local/products.txt';
 const productsList = new ProductList(fileName);
 
 function checkContent(products){
@@ -90,4 +91,4 @@ router.all('*', (req, res) => {
     res.status(501).json( {error: `Method: ${method} not implemented for requested url: ${url}`} );
 });
 
-module.exports = router;
+export { router };

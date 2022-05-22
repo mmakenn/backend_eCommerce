@@ -1,12 +1,13 @@
-const { Router } = require('express');
-const { Cart } = require('../components/cart');
+import { Router } from 'express';
+import { Cart } from '../DAOs/local/cart.js';
+
 const router = new Router();
 
 const carts = [];
 let totalCarts = 1;
 
 function createFileName(id){
-    return `./src/data/cartId${id}.txt`;
+    return `./src/data/local/cartId${id}.txt`;
 }
 
 async function pushUserProducts(id, res){
@@ -84,4 +85,4 @@ router.all('*', (req, res) => {
     res.status(501).json( {error: `Method: ${method} not implemented for requested url: ${url}`} );
 });
 
-module.exports = router;
+export { router };
