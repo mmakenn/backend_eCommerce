@@ -1,11 +1,10 @@
 import { Router } from 'express';
-import { ProductList } from '../DAOs/local/productsList.js';
+import { ProductList } from '../DAOs/mongo/productsList.js';
 
 const router = new Router();
-const adminUser = false;
+const adminUser = true;
 
-const fileName = './src/data/local/products.txt';
-const productsList = new ProductList(fileName);
+const productsList = new ProductList();
 
 function checkContent(products){
     return (products.length > 0);
@@ -31,10 +30,10 @@ async function pushProducts(res){
 
 async function pushProductsById(params, res){
     const found = await productsList.getById(params.id);
-    if (found){
-        res.status(200).json( {product: found} );
-    } else {
+    if (found.length == 0){
         res.status(204).json( {error: 'No content'} );
+    } else {
+        res.status(200).json( {product: found} );
     }
 }
 
