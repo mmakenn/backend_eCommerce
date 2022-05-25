@@ -73,7 +73,7 @@ class ContainerFirebase {
         }
     }
 
-    close() {
+    async close() {
         
     }
 }

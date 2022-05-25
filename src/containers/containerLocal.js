@@ -58,6 +58,10 @@ class Container {
             console.log(error);
         }
     }
+
+    async close() {
+        
+    }
 }
 
 export { Container };
