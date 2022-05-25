@@ -1,8 +1,7 @@
 import { Router } from 'express';
-import { ShoppingCarts } from '../DAOs/firebase/carts.js';
+import { carts } from '../DAOs/resolveDAO.js';
 
 const router = new Router();
-const carts = new ShoppingCarts();
 
 router.post('/', (req, res) => {
     carts.addCart()

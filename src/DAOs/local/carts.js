@@ -1,7 +1,7 @@
 import fs from 'fs';
-import { Container } from '../../containers/container.js';
+import { Container } from '../../containers/containerLocal.js';
 
-class Cart extends Container {
+class ShoppingCarts extends Container {
     constructor(id, fileName) {
         super(fileName);
         this.id = id;
@@ -21,4 +21,4 @@ class Cart extends Container {
 }
 
 
-export { Cart };
+export { ShoppingCarts };
