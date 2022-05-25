@@ -23,11 +23,11 @@ class ContainerMongo {
     }
 
     async getById(idIn) {
-        const product = await this.collection.find({_id: idIn});
-        if (product.length == 0) {
+        const products = await this.collection.find({_id: idIn});
+        if (products.length == 0) {
             return null;
         }
-        return product;
+        return products[0];
     }
 
     async deleteById(idIn) {
