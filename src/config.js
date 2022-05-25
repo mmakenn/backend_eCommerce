@@ -11,6 +11,7 @@ export default {
         }
     },
     firebase: {
-        
+        credentials: "./src/data/coderhouse-backend-89c90-firebase-adminsdk-z2vh7-94abfe383b.json",
+        url: "https://coderhouse-backend89c90-.firebaseio.com"
     }
 }

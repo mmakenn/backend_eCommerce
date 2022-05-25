@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { ProductList } from '../DAOs/mongo/productsList.js';
+import { ProductList } from '../DAOs/firebase/productsList.js';
 
 const router = new Router();
 const adminUser = true;
