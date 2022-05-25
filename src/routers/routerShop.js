@@ -1,10 +1,8 @@
 import { Router } from 'express';
-import { ProductList } from '../DAOs/local/productsList.js';
+import { productsList } from '../DAOs/productsDAO.js';
 
 const router = new Router();
 const adminUser = true;
-
-const productsList = new ProductList();
 
 function checkContent(products){
     return (products.length > 0);

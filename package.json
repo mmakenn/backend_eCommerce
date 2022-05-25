@@ -6,6 +6,9 @@
   "main": "src/main.js",
   "scripts": {
     "start": "node src/main.js",
+    "start:mongodb": "set PERS=mongodb && node src/main.js",
+    "start:firebase": "set PERS=firebase && node src/main.js",
+    "start:local": "set PERS=local && node src/main.js",
     "dev": "nodemon src/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
