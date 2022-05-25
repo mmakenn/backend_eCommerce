@@ -1,8 +1,7 @@
-//const fileName = './src/data/local/products.txt';
-//const productsList = new ProductList(fileName);
 export default {
     localFile: {
-        path: ''
+        path_products: './src/data/local/products.txt',
+        path_carts: './src/data/local/carts.txt'
     },
     mongoDB: {
         urlServer: 'mongodb+srv://mmakenn:coderhouse@cluster0.6zovj.mongodb.net/coderhouse-proyect?retryWrites=true&w=majority',

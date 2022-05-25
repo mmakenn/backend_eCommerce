@@ -9,20 +9,20 @@ class ProductList extends ContainerFirebase{
         try {
             const doc = this.coleccion.doc(idIn);
             const product = await doc.get();
-            await doc.update(
-                {
-                    price: price,
-                    stock: stock
-                }
-            );
-            return product.data();
+            const productData = product.data();
+            if (price) {
+                await doc.update({ price: price });    
+            }
+            if (stock) {
+                await doc.update({ stock: stock });
+            }
+            if (productData == undefined) {
+                return false;
+            }
+            return true;
         } catch (error) {
             console.log(error);
         }
-        /* if () {
-            return false;
-        }
-        return true; */
     }
 }
 

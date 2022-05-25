@@ -16,7 +16,7 @@ class ProductList extends ContainerMongo {
 
     async update(idIn, price, stock){
         const info = await this.collection.updateOne(
-            { id: idIn },
+            { _id: idIn },
             { $set: { price: price, stock: stock } }
         );
         if (info.modifiedCount == 0) {

@@ -1,7 +1,11 @@
 import fs from 'fs';
-import { Container } from '../../containers/container.js';
+import { Container } from '../../containers/containerLocal.js';
+import config from '../../config.js';
 
 class ProductList extends Container {
+    constructor() {
+        super(config.localFile.path_products);
+    }
     
     async update(idIn, price, stock){
         const id = parseInt(idIn);

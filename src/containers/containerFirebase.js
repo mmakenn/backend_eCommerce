@@ -48,10 +48,11 @@ class ContainerFirebase {
         try {
             const doc = this.coleccion.doc(idIn);
             const product = await doc.get();
-            const productObj = {
-                                id: product.id,
-                                ...product.data()};
-            return productObj;
+            const productData = product.data();
+            if (productData == undefined) {
+                return null;
+            }
+            return {id: product.id, ...productData};
         } catch (error) {
             console.log(error);
         }
@@ -61,12 +62,19 @@ class ContainerFirebase {
         try {
             const doc = this.coleccion.doc(idIn);
             const product = await doc.get();
-            const data = product.data();
+            const productData = product.data();
             await doc.delete();
-            return data;
+            if (productData == undefined) {
+                return false;
+            }
+            return true;
         } catch (error) {
             console.log(error);
         }
+    }
+
+    close() {
+        
     }
 }
 

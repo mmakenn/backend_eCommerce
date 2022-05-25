@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { ProductList } from '../DAOs/firebase/productsList.js';
+import { ProductList } from '../DAOs/local/productsList.js';
 
 const router = new Router();
 const adminUser = true;
@@ -30,7 +30,7 @@ async function pushProducts(res){
 
 async function pushProductsById(params, res){
     const found = await productsList.getById(params.id);
-    if (found.length == 0){
+    if (! found){
         res.status(204).json( {error: 'No content'} );
     } else {
         res.status(200).json( {product: found} );
