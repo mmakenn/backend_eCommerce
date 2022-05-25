@@ -7,7 +7,7 @@ class ProductList extends ContainerFirebase{
 
     async update(idIn, price, stock){
         try {
-            const doc = this.coleccion.doc(idIn);
+            const doc = this.collection.doc(idIn);
             const product = await doc.get();
             const productData = product.data();
             if (price) {

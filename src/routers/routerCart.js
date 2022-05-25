@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { ShoppingCarts } from '../DAOs/mongo/carts.js';
+import { ShoppingCarts } from '../DAOs/firebase/carts.js';
 
 const router = new Router();
 const carts = new ShoppingCarts();
@@ -30,7 +30,7 @@ router.get('/:id/productos', (req, res) => {
     carts.getById(params.id)
         .then(foundCart => {
             if (foundCart){
-                res.sendStatus(200);
+                res.status(200).json( {products: foundCart.products} );
             } else {
                 res.status(400).json( {error: "Cart or Product id not found"} );
             }
@@ -42,7 +42,7 @@ router.delete('/:id/productos/:id_prod',  (req, res) => {
     carts.deleteProductFromCartId(params.id, params.id_prod)
         .then(foundCart => {
             if (foundCart){
-                res.status(200).json( {products: foundCart.products} );
+                res.sendStatus(200);
             } else {
                 res.status(400).json( {error: "Cart id not found"} );
             }

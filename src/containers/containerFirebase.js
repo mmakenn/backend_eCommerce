@@ -13,12 +13,12 @@ const db = admin.firestore();
 
 class ContainerFirebase {
     constructor(collecName) {
-        this.coleccion = db.collection(collecName)
+        this.collection = db.collection(collecName)
     }
 
     async getAll() {
         try {
-            const snapshot = await this.coleccion.get();
+            const snapshot = await this.collection.get();
             const products = snapshot.docs;
             const productsList = products.map(
                 (product) => (
@@ -36,7 +36,7 @@ class ContainerFirebase {
 
     async save(product) {
         try {
-            const doc = this.coleccion.doc();
+            const doc = this.collection.doc();
             await doc.create(product);
             return doc.id;
         } catch (error) {
@@ -46,7 +46,7 @@ class ContainerFirebase {
 
     async getById(idIn) {
         try {
-            const doc = this.coleccion.doc(idIn);
+            const doc = this.collection.doc(idIn);
             const product = await doc.get();
             const productData = product.data();
             if (productData == undefined) {
@@ -60,7 +60,7 @@ class ContainerFirebase {
 
     async deleteById(idIn) {
         try {
-            const doc = this.coleccion.doc(idIn);
+            const doc = this.collection.doc(idIn);
             const product = await doc.get();
             const productData = product.data();
             await doc.delete();
