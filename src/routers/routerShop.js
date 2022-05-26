@@ -2,85 +2,75 @@ import { Router } from 'express';
 import { productsList } from '../DAOs/resolveDAO.js';
 
 const router = new Router();
-const adminUser = true;
+const ADMIN_USER = true;
 
 function checkContent(products){
     return (products.length > 0);
 }
 
 function checkUser(req, res, next) {
-    if (adminUser) {
+    if (ADMIN_USER) {
         next();
     } else {
         res.sendStatus(401);
     }
 }
 
-async function pushProducts(res){
-    const products = await productsList.getAll();
-    const areProducts = checkContent(products);
-    if (areProducts){
-        res.status(200).json( {products: products} );
-    } else {
-        res.status(204).json( {error: 'No content'} );
-    }
-}
-
-async function pushProductsById(params, res){
-    const found = await productsList.getById(params.id);
-    if (! found){
-        res.status(204).json( {error: 'No content'} );
-    } else {
-        res.status(200).json( {product: found} );
-    }
-}
-
-async function getUserInput(body, res) {
-    const id = await productsList.save(body);
-    res.status(201).json( {id: id} );
-}
-
-async function getUserUpdate(body, params, res){
-    const result = await productsList.update(params.id, body.price, body.stock);
-    if (result){
-        res.sendStatus(200);
-    } else {
-        res.status(304).json( {error: `Product id: ${params.id} not found`} );
-    }
-}
-
-async function deleteProduct(params, res){
-    const result = await productsList.deleteById(params.id);
-    if (result){
-        res.sendStatus(200);
-    } else {
-        res.status(304).json( {error: `Product id: ${params.id} not found`} );
-    }
-}
-
-/* -------------------------------------------------------- */
+/* -------------------------------ROUTER------------------------------- */
 router.get('/', (req, res) => {
-    pushProducts(res);
+    productsList.getAll()
+        .then(products => {
+            const areProducts = checkContent(products);
+            if (areProducts){
+                res.status(200).json( {products: products} );
+            } else {
+                res.status(204).json( {error: 'No content'} );
+            }
+        });
 });
 
 router.get('/:id', (req, res) => {
     const { params } = req;
-    pushProductsById(params, res);
+    productsList.getById(params.id)
+        .then(found => {
+            if (! found){
+                res.status(204).json( {error: 'No content'} );
+            } else {
+                res.status(200).json( {product: found} );
+            }
+        });
 });
 
 router.post('/', checkUser, (req, res) => {
     const { body } = req;
-    getUserInput(body, res);
+    productsList.save(body)
+        .then(id => {
+            res.status(201).json( {id: id} );
+        })
 });
 
 router.put('/:id', checkUser, (req, res) => {
     const { body, params } = req;
-    getUserUpdate(body, params, res);
+    productsList.update(params.id, body.price, body.stock)
+        .then(result => {
+            if (result){
+                res.sendStatus(200);
+            } else {
+                res.status(304).json( {error: `Product id: ${params.id} not found`} );
+            }
+        });
 });
 
 router.delete('/:id', checkUser, (req, res) => {
     const { params } = req;
-    deleteProduct(params, res);
+    productsList.deleteById(params.id)
+        .then(result => {
+            if (result){
+                res.sendStatus(200);
+            } else {
+                res.status(304).json( {error: `Product id: ${params.id} not found`} );
+            }
+        })
 });
 
 router.all('*', (req, res) => {

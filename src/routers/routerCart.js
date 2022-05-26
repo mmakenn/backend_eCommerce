@@ -3,6 +3,11 @@ import { carts } from '../DAOs/resolveDAO.js';
 
 const router = new Router();
 
+function checkContent(products){
+    return (products.length > 0);
+}
+
+/* -------------------------------ROUTER------------------------------- */
 router.post('/', (req, res) => {
     carts.addCart()
         .then(
@@ -29,9 +34,14 @@ router.get('/:id/productos', (req, res) => {
     carts.getById(params.id)
         .then(foundCart => {
             if (foundCart){
-                res.status(200).json( {products: foundCart.products} );
+                const areProducts = checkContent(foundCart.products);
+                if (areProducts){
+                    res.status(200).json( {products: foundCart.products} );
+                } else {
+                    res.status(204).json( {error: 'No content'} );
+                }
             } else {
-                res.status(400).json( {error: "Cart or Product id not found"} );
+                res.status(400).json( {error: "Cart id not found"} );
             }
         });
 });
@@ -43,7 +53,7 @@ router.delete('/:id/productos/:id_prod',  (req, res) => {
             if (foundCart){
                 res.sendStatus(200);
             } else {
-                res.status(400).json( {error: "Cart id not found"} );
+                res.status(400).json( {error: "Cart or Product id not found"} );
             }
         });
 });
