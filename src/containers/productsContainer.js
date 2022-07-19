@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ContainerMongo } from "../../containers/containerMongo.js";
+import { ContainerMongo } from "./containerMongo.js";
 
 const productsListSchema = new mongoose.Schema({
     title: { type: String, required: true },
@@ -9,7 +9,7 @@ const productsListSchema = new mongoose.Schema({
     image: { type: String }
 });
 
-class ProductList extends ContainerMongo {
+class ProductsContainer extends ContainerMongo {
     constructor(){
         super('products', productsListSchema);
     }
@@ -26,4 +26,4 @@ class ProductList extends ContainerMongo {
     }
 }
 
-export { ProductList }
+export { ProductsContainer }

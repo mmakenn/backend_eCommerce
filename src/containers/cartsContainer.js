@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ContainerMongo } from "../../containers/containerMongo.js";
+import { ContainerMongo } from "./containerMongo.js";
 
 const cartSchema = new mongoose.Schema({
     products: { type: Array, required: true }
@@ -16,7 +16,7 @@ async function updateAndResolve(collection, id, newProductsArray){
     return true;
 }
 
-class ShoppingCarts extends ContainerMongo {
+class CartsContainer extends ContainerMongo {
     constructor(){
         super('cart', cartSchema);
     }
@@ -52,4 +52,4 @@ class ShoppingCarts extends ContainerMongo {
     }
 }
 
-export { ShoppingCarts };
+export { CartsContainer };
