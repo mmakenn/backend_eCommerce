@@ -1,16 +1,19 @@
-export default {
-    localFile: {
-        path_products: './src/data/local/products.txt',
-        path_carts: './src/data/local/carts.txt'
+import 'dotenv/config'
+
+export const mongoDB = {
+    urlServer: `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.6zovj.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`,
+    options: {
+        serverSelectionTimeoutMS: 5000,
     },
-    mongoDB: {
-        urlServer: 'mongodb+srv://mmakenn:coderhouse@cluster0.6zovj.mongodb.net/coderhouse-proyect?retryWrites=true&w=majority',
-        options: {
-            serverSelectionTimeoutMS: 5000,
-        }
-    },
-    firebase: {
-        credentials: "./src/data/coderhouse-backend-89c90-firebase-adminsdk-z2vh7-94abfe383b.json",
-        url: "https://coderhouse-backend89c90-.firebaseio.com"
+    advancedOptions: { 
+        useNewUrlParser: true, 
+        useUnifiedTopology: true 
     }
 }
+
+export const PORT = process.env.PORT ?? 8080
+
+/* Argv(s) */
+import parseArgs from 'minimist'
+
+export const SERVER_MODE = parseArgs(process.argv).server_mode ?? 'fork'
