@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import config from "../config.js";
+import { mongoDB } from "../config.js";
 
-await mongoose.connect(config.mongoDB.urlServer, config.mongoDB.options)
+await mongoose.connect(mongoDB.urlServer, mongoDB.options)
 
 class ContainerMongo {
     constructor(collecName, schema) {
@@ -13,26 +13,30 @@ class ContainerMongo {
         return all;
     }
 
-    async save(product) {
+    async save(object) {
         try {
-            const info = await this.collection.create(product);
+            const info = await this.collection.create(object);
             return info.id;
         } catch (err) {
-            console.log('Error, not saved.')
+            logger.error(`Error, object ${object} not saved:
+                Database error:
+                \t ${err}`)
         }
     }
 
     async getById(idIn) {
-        const products = await this.collection.find({_id: idIn});
-        if (products.length == 0) {
+        const objects = await this.collection.find({_id: idIn});
+        if (objects.length == 0) {
+            logger.error(`Error, object with id ${idIn} not found`)
             return null;
         }
-        return products[0];
+        return objects[0];
     }
 
     async deleteById(idIn) {
         const info = await this.collection.deleteOne({_id: idIn});
         if (info.deletedCount == 0){
+            logger.error(`Error, object with id ${idIn} not found, can't be deleted.`)
             return false;
         }
         return true;
