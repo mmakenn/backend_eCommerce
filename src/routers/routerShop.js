@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { productsList } from '../DAOs/resolveDAO.js';
+import { productsList } from '../DAOs/mongo/productsList.js';
 
 const router = new Router();
 const ADMIN_USER = true;

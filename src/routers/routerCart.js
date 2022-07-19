@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { carts } from '../DAOs/resolveDAO.js';
+import { carts } from '../DAOs/mongo/carts.js';
 
 const router = new Router();
 
