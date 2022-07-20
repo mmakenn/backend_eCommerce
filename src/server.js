@@ -1,17 +1,39 @@
-import express from 'express';
-import { router as routerCart } from './routers/routerCart.js';
-import { router as routerShop } from './routers/routerShop.js';
+/* Server */
+import express from 'express'
 
-const app = express();
+/* Static, JSON, forms, compression. */
+import { setMiddleware } from './components/middleware.js';
+/* Session and Passport for authentication */
+import { setPassport } from './components/passport.js';
+/* Handlebars */
+import { setHandlebars } from './components/handlebars.js';
+/* Routers */
+import { routerCart } from './routers/routerCart.js'
+import { routerShop } from './routers/routerShop.js'
+import { routerUser } from './routers/routerUser.js'
+/* Logger */
+import logger from './components/logger.js';
 
-//--------------------------------------------
-// agrego middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+export function createServer(port) {
+    const app = express()
+    
+    setMiddleware(app)
+    
+    setPassport(app)
 
-//--------------------------------------------
-// agrego routers
-app.use('/api/productos', routerShop);
-app.use('/api/carrito', routerCart);
+    setHandlebars(app)
+    
+    app.use(routerCart)
+    app.use(routerShop)
+    app.use(routerUser)
 
-export default app;
+    app.get('*', (req, res) => {
+        logger.warn(`Request to URL: ${req.url} with method: ${req.method} is not implemented`)
+        res.sendStatus(501)
+    })
+    
+    const connectedServer = httpServer.listen(port, () => {
+        logger.info(`Servidor http escuchando en el puerto ${connectedServer.address().port}`)
+    })
+    connectedServer.on('error', error => logger.error(`Error en servidor ${error}`))
+}
