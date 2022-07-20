@@ -1,9 +1,9 @@
-import app from "./server.js";
+import { SERVER_MODE, PORT } from "../options.js";
+import { createCluster } from "./cluster.js";
+import { createServer } from "./server.js";
 
-//--------------------------------------------
-// inicio el servidor
-const PORT = 8080;
-const connectedServer = app.listen(PORT, () => {
-    console.log(`Servidor http escuchando en el puerto ${connectedServer.address().port}`);
-});
-connectedServer.on('error', error => console.log(`Error en servidor ${error}`));
+if (SERVER_MODE === 'cluster') {
+    createCluster(PORT)
+} else {
+    createServer(PORT)
+}
