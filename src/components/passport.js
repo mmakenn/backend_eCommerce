@@ -1,7 +1,7 @@
 import session from 'express-session';
 
 import MongoStore from 'connect-mongo';
-import { mongoDB } from '../config.js';
+import { mongoDB } from '../../config.js';
 
 import passport from 'passport'
 import { Strategy } from 'passport-local'

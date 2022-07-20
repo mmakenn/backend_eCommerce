@@ -32,7 +32,7 @@ export function createServer(port) {
         res.sendStatus(501)
     })
     
-    const connectedServer = httpServer.listen(port, () => {
+    const connectedServer = app.listen(port, () => {
         logger.info(`Servidor http escuchando en el puerto ${connectedServer.address().port}`)
     })
     connectedServer.on('error', error => logger.error(`Error en servidor ${error}`))

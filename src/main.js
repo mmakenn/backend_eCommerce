@@ -1,4 +1,4 @@
-import { SERVER_MODE, PORT } from "./config.js";
+import { SERVER_MODE, PORT } from "../config.js";
 import { createCluster } from "./cluster.js";
 import { createServer } from "./server.js";
 

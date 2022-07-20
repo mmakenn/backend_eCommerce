@@ -1,7 +1,7 @@
 import 'dotenv/config'
 
 export const mongoDB = {
-    urlServer: `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.6zovj.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`,
+    urlServer: `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.6zovj.mongodb.net/?retryWrites=true&w=majority`,
     options: {
         serverSelectionTimeoutMS: 5000,
     },

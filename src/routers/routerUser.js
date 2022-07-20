@@ -28,18 +28,18 @@ routerUser.get('/failLogin', (req, res) => {
 
 routerUser.get('/logout', (req, res, next) => {
     logger.info(`Request to URL: ${req.url} with method: ${req.method}`)
-
-    if (req.isAuthenticated()) {
-        const username = req.user.username
-        req.logout((err) => {
-            if (err) {
-                return next(err)
-            }
-        })
-        res.render('logOut', {user: username})
-    } else {
-        res.render('logOut', {user: ""})
-    }
+    res.render('logOut', {user: username})
+    // if (req.isAuthenticated()) {
+    //     const username = req.user.username
+    //     req.logout((err) => {
+    //         if (err) {
+    //             return next(err)
+    //         }
+    //     })
+    //     res.render('logOut', {user: username})
+    // } else {
+    //     res.render('logOut', {user: ""})
+    // }
 })
 
 export { routerUser }

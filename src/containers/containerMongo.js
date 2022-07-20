@@ -1,7 +1,14 @@
 import mongoose from "mongoose";
-import { mongoDB } from "../config.js";
+import { mongoDB } from "../../config.js";
+import logger from '../components/logger.js'
 
-await mongoose.connect(mongoDB.urlServer, mongoDB.options)
+try {
+    await mongoose.connect(mongoDB.urlServer, mongoDB.options)
+} catch (err) {
+    logger.error(`Error with connection
+                Database error:
+                \t ${err}`)
+}
 
 class ContainerMongo {
     constructor(collecName, schema) {
