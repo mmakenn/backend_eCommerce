@@ -32,7 +32,7 @@ class ContainerMongo {
     }
 
     async getById(idIn) {
-        const objects = await this.collection.find({_id: idIn});
+        const objects = await this.collection.find({id: idIn});
         if (objects.length == 0) {
             logger.error(`Error, object with id ${idIn} not found`)
             return null;
@@ -41,7 +41,7 @@ class ContainerMongo {
     }
 
     async deleteById(idIn) {
-        const info = await this.collection.deleteOne({_id: idIn});
+        const info = await this.collection.deleteOne({id: idIn});
         if (info.deletedCount == 0){
             logger.error(`Error, object with id ${idIn} not found, can't be deleted.`)
             return false;

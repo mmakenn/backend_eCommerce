@@ -1,4 +1,5 @@
 import logger from '../components/logger.js'
+import { auth } from '../components/authUser.js'
 import { Router } from 'express'
 const routerUser = new Router()
 
@@ -26,7 +27,7 @@ routerUser.get('/failLogin', (req, res) => {
     res.render('logIn', {error: true})
 })
 
-routerUser.get('/logout', (req, res, next) => {
+routerUser.get('/logout', auth, (req, res, next) => {
     logger.info(`Request to URL: ${req.url} with method: ${req.method}`)
     res.render('logOut', {user: username})
     // if (req.isAuthenticated()) {

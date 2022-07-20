@@ -74,9 +74,4 @@ routerShop.delete('/:id', checkUser, (req, res) => {
         })
 });
 
-routerShop.all('*', (req, res) => {
-    const { url, method } = req;
-    res.status(501).json( {error: `Method: ${method} not implemented for requested url: ${url}`} );
-});
-
 export { routerShop };

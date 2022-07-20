@@ -23,9 +23,9 @@ export function createServer(port) {
 
     setHandlebars(app)
     
+    app.use(routerUser)
     app.use(routerCart)
     app.use(routerShop)
-    app.use(routerUser)
 
     app.get('*', (req, res) => {
         logger.warn(`Request to URL: ${req.url} with method: ${req.method} is not implemented`)
