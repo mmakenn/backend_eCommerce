@@ -1,32 +1,32 @@
 import logger from '../components/logger.js'
 import { Router } from 'express'
-const sessionRouter = new Router()
+const routerUser = new Router()
 
-sessionRouter.get('/register', (req, res) => {
+routerUser.get('/register', (req, res) => {
     logger.info(`Request to URL: ${req.url} with method: ${req.method}`)
 
     res.render('register', {error: false})
 })
 
-sessionRouter.get('/failRegister', (req, res) => {
+routerUser.get('/failRegister', (req, res) => {
     logger.info(`Request to URL: ${req.url} with method: ${req.method}`)
 
     res.render('register', {error: true})
 })
 
-sessionRouter.get('/login', (req, res) => {
+routerUser.get('/login', (req, res) => {
     logger.info(`Request to URL: ${req.url} with method: ${req.method}`)
 
     res.render('logIn', {error: false})
 })
 
-sessionRouter.get('/failLogin', (req, res) => {
+routerUser.get('/failLogin', (req, res) => {
     logger.info(`Request to URL: ${req.url} with method: ${req.method}`)
 
     res.render('logIn', {error: true})
 })
 
-sessionRouter.get('/logout', (req, res, next) => {
+routerUser.get('/logout', (req, res, next) => {
     logger.info(`Request to URL: ${req.url} with method: ${req.method}`)
 
     if (req.isAuthenticated()) {
@@ -42,4 +42,4 @@ sessionRouter.get('/logout', (req, res, next) => {
     }
 })
 
-export { sessionRouter }
+export { routerUser }

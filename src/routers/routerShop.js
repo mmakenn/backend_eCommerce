@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { productsList } from '../DAOs/mongo/productsList.js';
+import { ProductsContainer } from '../containers/productsContainer.js';
 
-const router = new Router();
+const routerShop = new Router();
 const ADMIN_USER = true;
+const productsList  = new ProductsContainer()
 
 function checkContent(products){
     return (products.length > 0);
@@ -17,7 +18,7 @@ function checkUser(req, res, next) {
 }
 
 /* -------------------------------ROUTER------------------------------- */
-router.get('/', (req, res) => {
+routerShop.get('/', (req, res) => {
     productsList.getAll()
         .then(products => {
             const areProducts = checkContent(products);
@@ -29,7 +30,7 @@ router.get('/', (req, res) => {
         });
 });
 
-router.get('/:id', (req, res) => {
+routerShop.get('/:id', (req, res) => {
     const { params } = req;
     productsList.getById(params.id)
         .then(found => {
@@ -41,7 +42,7 @@ router.get('/:id', (req, res) => {
         });
 });
 
-router.post('/', checkUser, (req, res) => {
+routerShop.post('/', checkUser, (req, res) => {
     const { body } = req;
     productsList.save(body)
         .then(id => {
@@ -49,7 +50,7 @@ router.post('/', checkUser, (req, res) => {
         })
 });
 
-router.put('/:id', checkUser, (req, res) => {
+routerShop.put('/:id', checkUser, (req, res) => {
     const { body, params } = req;
     productsList.update(params.id, body.price, body.stock)
         .then(result => {
@@ -61,7 +62,7 @@ router.put('/:id', checkUser, (req, res) => {
         });
 });
 
-router.delete('/:id', checkUser, (req, res) => {
+routerShop.delete('/:id', checkUser, (req, res) => {
     const { params } = req;
     productsList.deleteById(params.id)
         .then(result => {
@@ -73,9 +74,9 @@ router.delete('/:id', checkUser, (req, res) => {
         })
 });
 
-router.all('*', (req, res) => {
+routerShop.all('*', (req, res) => {
     const { url, method } = req;
     res.status(501).json( {error: `Method: ${method} not implemented for requested url: ${url}`} );
 });
 
-export { router };
+export { routerShop };

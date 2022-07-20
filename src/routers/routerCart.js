@@ -1,14 +1,15 @@
 import { Router } from 'express';
-import { carts } from '../DAOs/mongo/carts.js';
+import { CartsContainer } from '../containers/cartsContainer.js';
 
-const router = new Router();
+const routerCart = new Router();
+const carts = new CartsContainer()
 
 function checkContent(products){
     return (products.length > 0);
 }
 
 /* -------------------------------ROUTER------------------------------- */
-router.post('/', (req, res) => {
+routerCart.post('/', (req, res) => {
     carts.addCart()
         .then(
             newId => {
@@ -17,7 +18,7 @@ router.post('/', (req, res) => {
         );
 });
 
-router.post('/:id/productos', (req, res) =>{
+routerCart.post('/:id/productos', (req, res) =>{
     const { params, body } = req;
     carts.save(params.id, body)
         .then(foundCart => {
@@ -29,7 +30,7 @@ router.post('/:id/productos', (req, res) =>{
         });
 });
 
-router.get('/:id/productos', (req, res) => {
+routerCart.get('/:id/productos', (req, res) => {
     const { params } = req;
     carts.getById(params.id)
         .then(foundCart => {
@@ -46,7 +47,7 @@ router.get('/:id/productos', (req, res) => {
         });
 });
 
-router.delete('/:id/productos/:id_prod',  (req, res) => {
+routerCart.delete('/:id/productos/:id_prod',  (req, res) => {
     const { params } = req;
     carts.deleteProductFromCartId(params.id, params.id_prod)
         .then(foundCart => {
@@ -58,7 +59,7 @@ router.delete('/:id/productos/:id_prod',  (req, res) => {
         });
 });
 
-router.delete('/:id',  (req, res) => {
+routerCart.delete('/:id',  (req, res) => {
     const { params } = req;
     carts.reset(params.id)
         .then(cartFound => {
@@ -70,9 +71,9 @@ router.delete('/:id',  (req, res) => {
         });
 });
 
-router.all('*', (req, res) => {
+routerCart.all('*', (req, res) => {
     const { url, method } = req;
     res.status(501).json( {error: `Method: ${method} not implemented for requested url: ${url}`} );
 });
 
-export { router };
+export { routerCart };
