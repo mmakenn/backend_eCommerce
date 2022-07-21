@@ -2,22 +2,25 @@
 import express from 'express'
 
 /* Static, JSON, forms, compression. */
-import { setMiddleware } from './components/middleware.js';
+import { setMiddleware } from './middleware/middleware.js';
 /* Session and Passport for authentication */
-import { setPassport } from './components/passport.js';
+import { setSession } from './middleware/session.js'
+import { setPassport } from './middleware/passport.js';
 /* Handlebars */
-import { setHandlebars } from './components/handlebars.js';
+import { setHandlebars } from './middleware/handlebars.js';
 /* Routers */
 import { routerCart } from './routers/routerCart.js'
 import { routerShop } from './routers/routerShop.js'
 import { routerUser } from './routers/routerUser.js'
 /* Logger */
-import logger from './components/logger.js';
+import logger from './middleware/logger.js';
 
 export function createServer(port) {
     const app = express()
     
     setMiddleware(app)
+
+    setSession(app)
     
     setPassport(app)
 
