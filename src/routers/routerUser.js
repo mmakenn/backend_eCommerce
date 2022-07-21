@@ -1,5 +1,5 @@
-import logger from '../components/logger.js'
-import { auth } from '../components/authUser.js'
+import logger from '../middleware/logger.js'
+import { auth } from '../middleware/authUser.js'
 import { Router } from 'express'
 const routerUser = new Router()
 
@@ -29,18 +29,31 @@ routerUser.get('/failLogin', (req, res) => {
 
 routerUser.get('/logout', auth, (req, res, next) => {
     logger.info(`Request to URL: ${req.url} with method: ${req.method}`)
-    res.render('logOut', {user: username})
-    // if (req.isAuthenticated()) {
-    //     const username = req.user.username
-    //     req.logout((err) => {
-    //         if (err) {
-    //             return next(err)
-    //         }
-    //     })
-    //     res.render('logOut', {user: username})
-    // } else {
-    //     res.render('logOut', {user: ""})
-    // }
+    if (req.isAuthenticated()) {
+        const username = req.user.username
+        req.logout((err) => {
+            if (err) {
+                return next(err)
+            }
+        })
+        res.render('logOut', {user: username})
+    } else {
+        res.render('logOut', {user: ""})
+    }
 })
+
+routerUser.post('/register', 
+    passport.authenticate('register', { 
+        failureRedirect: '/failRegister',
+        successRedirect: '/login'
+    })
+)
+
+routerUser.post('/login', 
+    passport.authenticate('login', { 
+        failureRedirect: '/failLogin',
+        successRedirect: '/api/productos'
+    })
+)
 
 export { routerUser }
