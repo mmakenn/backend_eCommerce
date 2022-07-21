@@ -5,7 +5,7 @@ import express from 'express'
 import { setMiddleware } from './middleware/middleware.js';
 /* Session and Passport for authentication */
 import { setSession } from './middleware/session.js'
-import { setPassport } from './middleware/passport.js';
+import { authenticationHandler, sessionHandler} from './middleware/passport.js';
 /* Handlebars */
 import { setHandlebars } from './middleware/handlebars.js';
 /* Routers */
@@ -22,7 +22,8 @@ export function createServer(port) {
 
     setSession(app)
     
-    setPassport(app)
+    app.use(authenticationHandler)
+    app.use(sessionHandler)
 
     setHandlebars(app)
     
