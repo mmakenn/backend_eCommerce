@@ -1,7 +1,7 @@
 import logger from '../middleware/logger.js'
 import { auth } from '../middleware/authUser.js'
 import { Router } from 'express'
-import { uploadFile } from '../middleware/multer.js'
+import { upload } from '../middleware/multer.js'
 import passport from 'passport'
 const routerUser = new Router()
 
@@ -44,7 +44,7 @@ routerUser.get('/logout', auth, (req, res, next) => {
     }
 })
 
-routerUser.post('/register', uploadFile,
+routerUser.post('/register', upload.single('avatar'),
     passport.authenticate('register', { 
         failureRedirect: '/failRegister',
         successRedirect: '/login'
