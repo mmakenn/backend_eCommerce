@@ -14,6 +14,7 @@ import { routerShop } from './routers/routerShop.js'
 import { routerUser } from './routers/routerUser.js'
 /* Logger */
 import logger from './middleware/logger.js';
+import { auth } from './middleware/authUser.js';
 
 export function createServer(port) {
     const app = express()
@@ -28,8 +29,9 @@ export function createServer(port) {
     setHandlebars(app)
     
     app.use(routerUser)
-    app.use(routerCart)
-    app.use(routerShop)
+    app.use('/api', auth)
+    app.use('/api/carrito', routerCart)
+    app.use('/api/productos', routerShop)
 
     app.get('*', (req, res) => {
         logger.warn(`Request to URL: ${req.url} with method: ${req.method} is not implemented`)

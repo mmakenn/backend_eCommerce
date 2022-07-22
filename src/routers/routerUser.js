@@ -44,7 +44,7 @@ routerUser.get('/logout', auth, (req, res, next) => {
     }
 })
 
-routerUser.post('/register', uploadFile, 
+routerUser.post('/register', uploadFile,
     passport.authenticate('register', { 
         failureRedirect: '/failRegister',
         successRedirect: '/login'

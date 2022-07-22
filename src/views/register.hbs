@@ -1,7 +1,7 @@
 <div class="container mt-3">
     <div class="jumbotron">
         <h2 class="h2">Ingrese sus datos</h2>
-        <form id="newUserForm" action="/register" method="POST">
+        <form id="newUserForm" action="/register" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="name"><b>Nombre:</b></label>
                 <input id="name" class="form-control" type="text" name="name" required>

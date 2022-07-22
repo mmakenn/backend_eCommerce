@@ -1,5 +1,5 @@
 import os from 'os'
-import logger from './components/logger.js'
+import logger from './middleware/logger.js'
 
 export function createCluster(port) {
     const nCPUs = os.cpus().length

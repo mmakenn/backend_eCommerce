@@ -12,7 +12,7 @@ passport.use('register', new Strategy(
         users.getByUsername(username)
             .then(user => {
                 if (user) {
-                    logger.error("Username is already in use.")
+                    logger.error(`Username is already in use.`)
                     return done(null, false)
                 } else {
                     const userInfo = req.body
