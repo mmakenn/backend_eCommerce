@@ -13,6 +13,11 @@ export const mongoDB = {
 
 export const PORT = process.env.PORT ?? 8080
 
+export const serverEmail = process.env.SERVER_EMAIL
+export const serverEmailPassword = process.env.SERVER_PASSWORD
+
+export const adminEmail = process.env.ADMIN_EMAIL
+
 /* Argv(s) */
 import parseArgs from 'minimist'
 

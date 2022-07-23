@@ -3,6 +3,7 @@ import { auth } from '../middleware/authUser.js'
 import { Router } from 'express'
 import { upload } from '../middleware/multer.js'
 import passport from 'passport'
+import { sendEmailToAdmin } from '../componentes/mailSender.js'
 const routerUser = new Router()
 
 routerUser.get('/register', (req, res) => {
@@ -44,7 +45,7 @@ routerUser.get('/logout', auth, (req, res, next) => {
     }
 })
 
-routerUser.post('/register', upload.single('avatar'),
+routerUser.post('/register', upload.single('avatar'), sendEmailToAdmin,
     passport.authenticate('register', { 
         failureRedirect: '/failRegister',
         successRedirect: '/login'
