@@ -13,7 +13,7 @@ import { routerCart } from './routers/routerCart.js'
 import { routerShop } from './routers/routerShop.js'
 import { routerUser } from './routers/routerUser.js'
 /* Logger */
-import logger from './middleware/logger.js';
+import logger from './components/logger.js';
 import { auth } from './middleware/authUser.js';
 
 export function createServer(port) {
@@ -29,9 +29,8 @@ export function createServer(port) {
     setHandlebars(app)
     
     app.use(routerUser)
-    app.use('/api', auth)
-    app.use('/api/carrito', routerCart)
-    app.use('/api/productos', routerShop)
+    app.use('/api/carrito', auth, routerCart)
+    app.use('/api/productos', auth, routerShop)
 
     app.get('*', (req, res) => {
         logger.warn(`Request to URL: ${req.url} with method: ${req.method} is not implemented`)

@@ -2,7 +2,7 @@ import passport from 'passport'
 import { Strategy } from 'passport-local'
 import { UsersContainer } from '../containers/usersContainer.js';
 
-import logger from './logger.js';
+import logger from '../components/logger.js';
 
 const users = new UsersContainer()
 

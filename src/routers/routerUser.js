@@ -1,4 +1,4 @@
-import logger from '../middleware/logger.js'
+import logger from '../components/logger.js'
 import { uploadFile } from '../middleware/multer.js'
 import passport from 'passport'
 import { notificationsSingUp } from '../controllers/notifications.js' 

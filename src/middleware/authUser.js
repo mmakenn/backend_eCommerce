@@ -1,4 +1,4 @@
-import logger from "../componentes/logger.js"
+import logger from "../components/logger.js"
 
 export function auth(req, res, next) {
     logger.info('REQUIRED: Trying to identify user...')
