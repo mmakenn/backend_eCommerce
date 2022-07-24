@@ -17,6 +17,11 @@ export const serverEmail = process.env.SERVER_EMAIL
 export const serverEmailPassword = process.env.SERVER_PASSWORD
 
 export const adminEmail = process.env.ADMIN_EMAIL
+export const adminPhone = process.env.ADMIN_PHONE
+
+export const twilioSID = process.env.TWILIO_SID
+export const twilioToken = process.env.TWILIO_TOKEN
+export const twilioNumber = process.env.TWILIO_NUMBER
 
 /* Argv(s) */
 import parseArgs from 'minimist'

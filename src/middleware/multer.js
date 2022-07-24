@@ -23,4 +23,4 @@ const storage = multer.diskStorage({
 
 export const upload = multer({ storage: storage })
 
-const uploadFile = upload.single('avatar')
+export const uploadFile = upload.single('avatar')

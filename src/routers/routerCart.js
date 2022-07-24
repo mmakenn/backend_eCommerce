@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { CartsContainer } from '../containers/cartsContainer.js';
+import { notificationsSale } from '../controllers/notifications.js';
 
 const routerCart = new Router();
 const carts = new CartsContainer()
@@ -71,4 +72,8 @@ routerCart.delete('/:id',  (req, res) => {
         });
 });
 
+routerCart.post('/:id/checkout', notificationsSale,
+    (req, res) => {
+        res.sendStatus(200)
+    })
 export { routerCart };

@@ -1,21 +1,21 @@
 import logger from '../middleware/logger.js'
-import { auth } from '../middleware/authUser.js'
-import { Router } from 'express'
-import { upload } from '../middleware/multer.js'
+import { uploadFile } from '../middleware/multer.js'
 import passport from 'passport'
-import { sendEmailToAdmin } from '../componentes/mailSender.js'
+import { notificationsSingUp } from '../controllers/notifications.js' 
+
+import { Router } from 'express'
 const routerUser = new Router()
 
-routerUser.get('/register', (req, res) => {
+routerUser.get('/singUp', (req, res) => {
     logger.info(`Request to URL: ${req.url} with method: ${req.method}`)
 
-    res.render('register', {error: false})
+    res.render('singUp', {error: false})
 })
 
-routerUser.get('/failRegister', (req, res) => {
+routerUser.get('/failSingUp', (req, res) => {
     logger.info(`Request to URL: ${req.url} with method: ${req.method}`)
 
-    res.render('register', {error: true})
+    res.render('singUp', {error: true})
 })
 
 routerUser.get('/login', (req, res) => {
@@ -30,7 +30,7 @@ routerUser.get('/failLogin', (req, res) => {
     res.render('logIn', {error: true})
 })
 
-routerUser.get('/logout', auth, (req, res, next) => {
+routerUser.get('/logout', (req, res, next) => {
     logger.info(`Request to URL: ${req.url} with method: ${req.method}`)
     if (req.isAuthenticated()) {
         const username = req.user.username
@@ -45,9 +45,9 @@ routerUser.get('/logout', auth, (req, res, next) => {
     }
 })
 
-routerUser.post('/register', upload.single('avatar'), sendEmailToAdmin,
+routerUser.post('/singUp', uploadFile, notificationsSingUp,
     passport.authenticate('register', { 
-        failureRedirect: '/failRegister',
+        failureRedirect: '/failSingUp',
         successRedirect: '/login'
     })
 )

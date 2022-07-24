@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { mongoDB } from "../../config.js";
-import logger from '../middleware/logger.js'
+import logger from '../components/logger.js'
 
 try {
     await mongoose.connect(mongoDB.urlServer, mongoDB.options)
