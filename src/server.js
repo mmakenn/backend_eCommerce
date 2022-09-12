@@ -1,44 +1,47 @@
 /* Server */
 import express from 'express'
 
-/* Static, JSON, forms, compression. */
-import { setMiddleware } from './middleware/middleware.js';
+import { closeDatabaseConnection } from './controllers/databaseConnectionHandler.js';
 /* Session and Passport for authentication */
-import { setSession } from './middleware/session.js'
-import { authenticationHandler, sessionHandler} from './middleware/passport.js';
-/* Handlebars */
-import { setHandlebars } from './middleware/handlebars.js';
+import { sessionHandler } from './middlewares/session.js'
+import { passportAuthentication, passportSession} from './middlewares/passport.js';
 /* Routers */
-import { routerCart } from './routers/routerCart.js'
-import { routerShop } from './routers/routerShop.js'
-import { routerUser } from './routers/routerUser.js'
+import { routerCarts } from './routers/carts.js';
+import { routerImages } from './routers/images.js';
+import { routerLogin } from './routers/login.js';
+import { routerNotImplemented } from './routers/notImplemted.js';
+import { routerOrders } from './routers/orders.js';
+import { routerProducts } from './routers/products.js';
+import { routerUser } from './routers/users.js';
 /* Logger */
-import logger from './components/logger.js';
-import { auth } from './middleware/authUser.js';
+import logger from './misc/logger.js';
 
 export function createServer(port) {
     const app = express()
     
-    setMiddleware(app)
+    app.use(express.json())
+    app.use(express.urlencoded( { extended: true } ))
+    app.use('/public', express.static('public'))
 
-    setSession(app)
-    
-    app.use(authenticationHandler)
     app.use(sessionHandler)
-
-    setHandlebars(app)
     
-    app.use(routerUser)
-    app.use('/api/carrito', auth, routerCart)
-    app.use('/api/productos', auth, routerShop)
-
-    app.get('*', (req, res) => {
-        logger.warn(`Request to URL: ${req.url} with method: ${req.method} is not implemented`)
-        res.sendStatus(501)
-    })
+    app.use(passportAuthentication)
+    app.use(passportSession)
     
+    app.use('/', routerLogin)
+    app.use('/api', routerImages)
+    app.use('/api', routerUser)
+    app.use('/api', routerProducts)
+    app.use('/api', routerCarts)
+    app.use('/api', routerOrders)
+    app.use('/', routerNotImplemented)
+
     const connectedServer = app.listen(port, () => {
         logger.info(`Servidor http escuchando en el puerto ${connectedServer.address().port}`)
     })
-    connectedServer.on('error', error => logger.error(`Error en servidor ${error}`))
+    
+    connectedServer.on('error', error => {
+        closeDatabaseConnection()
+        logger.error(`Error en servidor ${error}`)
+    })
 }
