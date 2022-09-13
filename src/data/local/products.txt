@@ -1,1 +1,0 @@
-[{"price":"45","stock":"2","title":"cvbcvb","id":1},{"price":"45","stock":"2","title":"cvbcvb","id":3},{"price":"45","stock":"2","title":"cvbcvb","id":4}]
