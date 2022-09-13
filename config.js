@@ -8,6 +8,10 @@ export const PORT = process.env.PORT ?? 8080
 export const SERVER_MODE = parseArgs(process.argv).server_mode ? parseArgs(process.argv).server_mode : 'fork'
 export const deployMode = parseArgs(process.argv).deploy_mode ? parseArgs(process.argv).deploy_mode : 'prod'
 export const codeForDevelDeploy = 'devel'
+export const handlebarsConfig = {
+    extname: '.hbs',
+    defaultLayout: 'index.hbs'
+}
 
 /* ---------------------------------------------------------------------------------------------- */
 /*                                       Databases Options                                        */
