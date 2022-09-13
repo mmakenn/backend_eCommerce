@@ -4,7 +4,7 @@ import parseArgs from 'minimist'
 /* ---------------------------------------------------------------------------------------------- */
 /*                                         Server Options                                         */
 /* ---------------------------------------------------------------------------------------------- */
-export const PORT = process.env.PORT ?? 8080
+export const PORT = process.env.PORT || 8080
 export const SERVER_MODE = parseArgs(process.argv).server_mode ? parseArgs(process.argv).server_mode : 'fork'
 export const deployMode = parseArgs(process.argv).deploy_mode ? parseArgs(process.argv).deploy_mode : 'prod'
 export const codeForDevelDeploy = 'devel'
